@@ -14,7 +14,7 @@ public class User {
 
     @Size(min = 4, max = 32, message = "Username length should be between 4 and 32 characters long")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username can only contain numbers, letters and underscores")
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
