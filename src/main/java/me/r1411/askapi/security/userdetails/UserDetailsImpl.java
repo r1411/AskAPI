@@ -21,10 +21,10 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
 
-        authorities.add(new SimpleGrantedAuthority("ACTIONS_USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         if (user.getRole() == Role.ADMIN)
-            authorities.add(new SimpleGrantedAuthority("ACTIONS_ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         return authorities;
     }
