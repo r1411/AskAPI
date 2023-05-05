@@ -3,6 +3,7 @@ package me.r1411.askapi.controller.exception;
 import me.r1411.askapi.controller.wrapper.ErrorResponseEntity;
 import me.r1411.askapi.dto.error.ErrorResponseDto;
 import me.r1411.askapi.dto.error.ValidationErrorResponseDto;
+import me.r1411.askapi.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler
     public ErrorResponseEntity<ErrorResponseDto> noHandlerException(NoHandlerFoundException e) {
         return new ErrorResponseEntity<>(new ErrorResponseDto("Endpoint not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ErrorResponseEntity<ErrorResponseDto> objectNotFoundException(ObjectNotFoundException e) {
+        return new ErrorResponseEntity<>(new ErrorResponseDto(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
