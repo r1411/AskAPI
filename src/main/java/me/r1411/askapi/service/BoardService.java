@@ -18,14 +18,12 @@ public class BoardService {
     }
 
     public Board create(Board board) {
-        boardRepository.save(board);
-        return board;
+        return boardRepository.save(board);
     }
 
     public Board update(int id, Board board) {
         board.setId(id);
-        boardRepository.save(board);
-        return board;
+        return boardRepository.save(board);
     }
 
     public void delete(int id) {

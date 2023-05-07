@@ -26,9 +26,7 @@ public class UserService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepository.save(user);
-
-        return user;
+        return userRepository.save(user);
     }
 
     @Transactional(readOnly = true)
