@@ -3,6 +3,8 @@ package me.r1411.askapi.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "question")
 public class Question {
@@ -27,6 +29,10 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "board_id", referencedColumnName = "id")
     private Board board;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
     public Question() {
 
@@ -70,5 +76,13 @@ public class Question {
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
