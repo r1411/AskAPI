@@ -14,11 +14,11 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Size(min = 2, max = 32, message = "Title length should be between 2 and 32 characters long")
+    @Size(min = 2, max = 128, message = "Title length should be between 2 and 128 characters long")
     @Column(name = "title")
     private String title;
 
-    @Size(min = 2, max = 32, message = "Text length should be between 2 and 32 characters long")
+    @Size(min = 2, max = 4000, message = "Text length should be between 2 and 4000 characters long")
     @Column(name = "text")
     private String text;
 
