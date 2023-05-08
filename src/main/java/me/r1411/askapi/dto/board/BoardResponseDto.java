@@ -1,4 +1,14 @@
 package me.r1411.askapi.dto.board;
 
-public record BoardResponseDto(int id, String title) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class BoardResponseDto {
+    private int id;
+
+    private String title;
 }

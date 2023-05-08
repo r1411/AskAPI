@@ -8,6 +8,7 @@ import me.r1411.askapi.dto.auth.AuthenticationResponseDto;
 import me.r1411.askapi.dto.auth.RegistrationRequestDto;
 import me.r1411.askapi.dto.auth.RegistrationResponseDto;
 import me.r1411.askapi.dto.error.ErrorResponseDto;
+import me.r1411.askapi.mapper.MapStructMapper;
 import me.r1411.askapi.model.User;
 import me.r1411.askapi.security.jwt.JwtUtils;
 import me.r1411.askapi.service.UserService;
@@ -32,20 +33,23 @@ public class AuthController {
 
     private final UserService userService;
 
+    private final MapStructMapper mapper;
+
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserService userService, MapStructMapper mapper) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @ResponseBody
     @PostMapping("/login")
     public SuccessResponseEntity<AuthenticationResponseDto> login(@RequestBody @Valid AuthenticationRequestDto requestDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.username(), requestDto.password()));
-            User user = userService.findByUsername(requestDto.username()).orElseThrow(() -> new IllegalStateException("User not found, but authentication is completed"));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword()));
+            User user = userService.findByUsername(requestDto.getUsername()).orElseThrow(() -> new IllegalStateException("User not found, but authentication is completed"));
             Map.Entry<String, Date> tokenInfo = jwtUtils.createToken(user);
             String token = tokenInfo.getKey();
             Date expirationDate = tokenInfo.getValue();
@@ -58,7 +62,7 @@ public class AuthController {
     @ResponseBody
     @PostMapping("/register")
     public SuccessResponseEntity<RegistrationResponseDto> register(@RequestBody @Valid RegistrationRequestDto requestDto) {
-        User createdUser = userService.register(requestDto.toUser());
+        User createdUser = userService.register(mapper.registrationRequestToUser(requestDto));
         Map.Entry<String, Date> tokenInfo = jwtUtils.createToken(createdUser);
         String token = tokenInfo.getKey();
         Date expirationDate = tokenInfo.getValue();
