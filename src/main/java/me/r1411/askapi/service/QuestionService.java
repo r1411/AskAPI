@@ -51,4 +51,9 @@ public class QuestionService {
     public Page<Question> findByBoardId(int boardId, Pageable pageable) {
         return questionRepository.findByBoardId(boardId, pageable);
     }
+
+    @Transactional(readOnly = true)
+    public Page<Question> findByAuthorId(int authorId, Pageable pageable) {
+        return questionRepository.findByAuthorId(authorId, pageable);
+    }
 }

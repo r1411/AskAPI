@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Page<Question> findByBoardId(int id, Pageable pageable);
+
+    Page<Question> findByAuthorId(int id, Pageable pageable);
 }

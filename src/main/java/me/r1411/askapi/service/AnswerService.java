@@ -33,6 +33,11 @@ public class AnswerService {
         return answerRepository.findByQuestionId(questionId, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<Answer> findByUserId(int userId, Pageable pageable) {
+        return answerRepository.findByUserId(userId, pageable);
+    }
+
     public Answer create(Answer answer, User user, Question question) {
         answer.setQuestion(question);
         answer.setUser(user);
