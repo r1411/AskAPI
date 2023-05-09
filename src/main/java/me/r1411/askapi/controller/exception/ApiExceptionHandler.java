@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,6 +61,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler
     public ErrorResponseEntity<ErrorResponseDto> accessDeniedException(AccessDeniedException e) {
         return new ErrorResponseEntity<>(new ErrorResponseDto("You don't have permission to perform this action"), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    public ErrorResponseEntity<ErrorResponseDto> methodNotSupported(HttpRequestMethodNotSupportedException e) {
+        return new ErrorResponseEntity<>(new ErrorResponseDto("Method not supported"), HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(Exception.class)
