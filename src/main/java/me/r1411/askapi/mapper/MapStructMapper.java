@@ -1,5 +1,7 @@
 package me.r1411.askapi.mapper;
 
+import me.r1411.askapi.dto.answer.AnswerRequestDto;
+import me.r1411.askapi.dto.answer.AnswerResponseDto;
 import me.r1411.askapi.dto.auth.RegistrationRequestDto;
 import me.r1411.askapi.dto.board.BoardRequestDto;
 import me.r1411.askapi.dto.board.BoardResponseDto;
@@ -7,6 +9,7 @@ import me.r1411.askapi.dto.question.QuestionCreateRequestDto;
 import me.r1411.askapi.dto.question.QuestionResponseDto;
 import me.r1411.askapi.dto.question.QuestionUpdateRequestDto;
 import me.r1411.askapi.dto.user.UserResponseDto;
+import me.r1411.askapi.model.Answer;
 import me.r1411.askapi.model.Board;
 import me.r1411.askapi.model.Question;
 import me.r1411.askapi.model.User;
@@ -45,4 +48,14 @@ public interface MapStructMapper {
 
     @BeanMapping(ignoreUnmappedSourceProperties = {"password", "role"})
     UserResponseDto userToUserResponse(User user);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "question", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    Answer answerRequestToAnswer(AnswerRequestDto answerRequestDto);
+
+
+    @BeanMapping(ignoreUnmappedSourceProperties = {"question"})
+    AnswerResponseDto answerToAnswerResponse(Answer answer);
 }
