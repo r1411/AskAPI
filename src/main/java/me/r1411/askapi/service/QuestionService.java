@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
@@ -28,6 +30,7 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Question> findById(int id) {
         return questionRepository.findById(id);
     }
@@ -44,6 +47,7 @@ public class QuestionService {
         questionRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public Page<Question> findByBoardId(int boardId, Pageable pageable) {
         return questionRepository.findByBoardId(boardId, pageable);
     }
