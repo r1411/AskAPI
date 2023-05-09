@@ -5,6 +5,8 @@ import me.r1411.askapi.model.Question;
 import me.r1411.askapi.model.User;
 import me.r1411.askapi.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -40,5 +42,9 @@ public class QuestionService {
 
     public void deleteById(int id) {
         questionRepository.deleteById(id);
+    }
+
+    public Page<Question> findByBoardId(int boardId, Pageable pageable) {
+        return questionRepository.findByBoardId(boardId, pageable);
     }
 }

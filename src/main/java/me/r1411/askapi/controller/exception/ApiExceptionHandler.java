@@ -1,5 +1,7 @@
 package me.r1411.askapi.controller.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import me.r1411.askapi.controller.wrapper.ErrorResponseEntity;
 import me.r1411.askapi.dto.error.ErrorResponseDto;
 import me.r1411.askapi.dto.error.ValidationErrorResponseDto;
@@ -9,8 +11,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Map;
@@ -31,6 +35,26 @@ public class ApiExceptionHandler {
     @ExceptionHandler
     public ErrorResponseEntity<ValidationErrorResponseDto> validationException(MethodArgumentNotValidException e) {
         return new ErrorResponseEntity<>(new ValidationErrorResponseDto("Validation failed", getValidationErrors(e.getBindingResult())), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ErrorResponseEntity<ErrorResponseDto> constraintViolation(ConstraintViolationException e) {
+        String msg = e.getConstraintViolations().stream().findFirst()
+                .map(ConstraintViolation::getMessage)
+                .orElse("Invalid request");
+
+        return new ErrorResponseEntity<>(new ErrorResponseDto(msg), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ErrorResponseEntity<ErrorResponseDto> missingRequestParam(MissingServletRequestParameterException e) {
+        return new ErrorResponseEntity<>(new ErrorResponseDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ErrorResponseEntity<ErrorResponseDto> wrongArgumentType(MethodArgumentTypeMismatchException e) {
+        String msg = "Param " + e.getPropertyName() + " should be " + e.getRequiredType();
+        return new ErrorResponseEntity<>(new ErrorResponseDto(msg), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
