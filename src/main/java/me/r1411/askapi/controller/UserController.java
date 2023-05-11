@@ -1,5 +1,8 @@
 package me.r1411.askapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import me.r1411.askapi.controller.wrapper.SuccessResponseEntity;
@@ -27,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "users", description = "Действия с пользователями")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -46,6 +51,10 @@ public class UserController {
         this.mapper = mapper;
     }
 
+    @Operation(
+            operationId = "userById",
+            summary = "Получить информацию о пользователе по его id"
+    )
     @GetMapping("/{id}")
     public SuccessResponseEntity<UserResponseDto> userById(@PathVariable int id) {
         User user = userService.findById(id)
@@ -54,6 +63,10 @@ public class UserController {
         return new SuccessResponseEntity<>(mapper.userToUserResponse(user), HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "questionsByUser",
+            summary = "Получить список вопросов пользователя"
+    )
     @GetMapping("/{id}/questions")
     public SuccessResponseEntity<QuestionListPageResponseDto> questionsByUser(
             @PathVariable
@@ -81,6 +94,10 @@ public class UserController {
         return new SuccessResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "answersByUser",
+            summary = "Получить список ответов пользователя"
+    )
     @GetMapping("/{id}/answers")
     public SuccessResponseEntity<AnswerListPageResponseDto> answersByUser(
             @PathVariable

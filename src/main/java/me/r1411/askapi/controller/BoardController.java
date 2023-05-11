@@ -1,5 +1,8 @@
 package me.r1411.askapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "boards", description = "Действия с досками")
 @Validated
 @RestController
 @RequestMapping("/boards")
@@ -45,6 +50,10 @@ public class BoardController {
         this.mapper = mapper;
     }
 
+    @Operation(
+            operationId = "allBoards",
+            summary = "Список всех досок"
+    )
     @GetMapping("")
     public SuccessResponseEntity<BoardListResponseDto> allBoards() {
         List<Board> boards = boardService.findAll();
@@ -53,6 +62,10 @@ public class BoardController {
         return new SuccessResponseEntity<>(new BoardListResponseDto(boardsDtos), HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "boardById",
+            summary = "Информация о доске по id"
+    )
     @GetMapping("/{id}")
     public SuccessResponseEntity<BoardResponseDto> boardById(@PathVariable("id") int id) {
         Optional<Board> boardOptional = boardService.findById(id);
@@ -61,6 +74,10 @@ public class BoardController {
         return new SuccessResponseEntity<>(mapper.boardToBoardResponse(board), HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "createBoard",
+            summary = "Создать доску"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public SuccessResponseEntity<BoardResponseDto> createBoard(@RequestBody @Valid BoardRequestDto requestDto) {
@@ -70,6 +87,10 @@ public class BoardController {
         return new SuccessResponseEntity<>(mapper.boardToBoardResponse(created), HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "deleteBoard",
+            summary = "Удалить доску"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public SuccessResponseEntity<?> deleteBoard(@PathVariable("id") int id) {
@@ -82,6 +103,10 @@ public class BoardController {
         return new SuccessResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "updateBoard",
+            summary = "Изменить доску"
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public SuccessResponseEntity<BoardResponseDto> updateBoard(@PathVariable("id") int id, @RequestBody @Valid BoardRequestDto requestDto) {
@@ -95,6 +120,10 @@ public class BoardController {
         return new SuccessResponseEntity<>(mapper.boardToBoardResponse(updated), HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "questionListPage",
+            summary = "Получить вопросы на доске"
+    )
     @GetMapping("/{id}/questions")
     public SuccessResponseEntity<QuestionListPageResponseDto> questionListPage(@PathVariable("id") int boardId,
 

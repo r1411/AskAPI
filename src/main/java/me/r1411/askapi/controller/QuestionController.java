@@ -1,5 +1,8 @@
 package me.r1411.askapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import me.r1411.askapi.controller.wrapper.SuccessResponseEntity;
 import me.r1411.askapi.dto.question.QuestionCreateRequestDto;
@@ -19,6 +22,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "questions", description = "Действия с вопросами")
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
@@ -34,6 +39,10 @@ public class QuestionController {
         this.mapper = mapper;
     }
 
+    @Operation(
+            operationId = "createQuestion",
+            summary = "Создать вопрос"
+    )
     @PostMapping("")
     public SuccessResponseEntity<QuestionResponseDto> createQuestion(
             @Valid @RequestBody QuestionCreateRequestDto requestDto,
@@ -48,6 +57,10 @@ public class QuestionController {
         return new SuccessResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "questionById",
+            summary = "Получить вопрос по id"
+    )
     @GetMapping("/{id}")
     public SuccessResponseEntity<QuestionResponseDto> questionById(@PathVariable("id") int id) {
         Question question = questionService.findById(id)
@@ -56,6 +69,10 @@ public class QuestionController {
         return new SuccessResponseEntity<>(mapper.questionToQuestionResponse(question), HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "updateQuestion",
+            summary = "Изменить вопрос по id"
+    )
     @PutMapping("/{id}")
     public SuccessResponseEntity<QuestionResponseDto> updateQuestion(
             @PathVariable("id") int id,
@@ -76,6 +93,10 @@ public class QuestionController {
         return new SuccessResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "deleteById",
+            summary = "Удалить вопрос по id"
+    )
     @DeleteMapping("/{id}")
     public SuccessResponseEntity<?> deleteById(@PathVariable("id") int id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Question existing = questionService.findById(id)

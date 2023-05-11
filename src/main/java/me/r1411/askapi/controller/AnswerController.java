@@ -1,5 +1,8 @@
 package me.r1411.askapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "answers", description = "Действия с ответами")
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
@@ -44,6 +49,10 @@ public class AnswerController {
         this.mapper = mapper;
     }
 
+    @Operation(
+            operationId = "answersForQuestion",
+            summary = "Получить ответы на вопрос по id вопроса"
+    )
     @GetMapping("")
     public SuccessResponseEntity<AnswerListPageResponseDto> answersForQuestion(
             @NotNull(message = "missing param: question_id")
@@ -72,6 +81,10 @@ public class AnswerController {
         return new SuccessResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "createAnswer",
+            summary = "Ответить на вопрос по id вопроса"
+    )
     @PostMapping("")
     public SuccessResponseEntity<AnswerResponseDto> createAnswer(
             @RequestParam("question_id")
@@ -96,6 +109,10 @@ public class AnswerController {
         return new SuccessResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "updateAnswer",
+            summary = "Изменить ответ по его id"
+    )
     @PutMapping("/{id}")
     public SuccessResponseEntity<AnswerResponseDto> updateAnswer(
             @PathVariable("id") int answerId,
@@ -113,6 +130,10 @@ public class AnswerController {
         return new SuccessResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Operation(
+            operationId = "deleteAnswer",
+            summary = "Удалить ответ по его id"
+    )
     @DeleteMapping("/{id}")
     public SuccessResponseEntity<?> deleteAnswer(
             @PathVariable("id") int answerId,

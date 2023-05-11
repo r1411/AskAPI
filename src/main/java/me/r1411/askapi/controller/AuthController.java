@@ -1,5 +1,7 @@
 package me.r1411.askapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import me.r1411.askapi.controller.wrapper.ErrorResponseEntity;
 import me.r1411.askapi.controller.wrapper.SuccessResponseEntity;
@@ -24,6 +26,7 @@ import java.util.Date;
 import java.util.Map;
 
 
+@Tag(name = "auth", description = "Регистрация, аутентификация")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -44,6 +47,10 @@ public class AuthController {
         this.mapper = mapper;
     }
 
+    @Operation(
+            operationId = "login",
+            summary = "Войти в существующий акканунт"
+    )
     @ResponseBody
     @PostMapping("/login")
     public SuccessResponseEntity<AuthenticationResponseDto> login(@RequestBody @Valid AuthenticationRequestDto requestDto) {
@@ -59,6 +66,10 @@ public class AuthController {
         }
     }
 
+    @Operation(
+            operationId = "register",
+            summary = "Зарегистрировать новый аккаунт"
+    )
     @ResponseBody
     @PostMapping("/register")
     public SuccessResponseEntity<RegistrationResponseDto> register(@RequestBody @Valid RegistrationRequestDto requestDto) {
