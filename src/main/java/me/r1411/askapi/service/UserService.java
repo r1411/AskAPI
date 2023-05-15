@@ -29,6 +29,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User register(User user, Role role) {
+        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
+    }
+
     @Transactional(readOnly = true)
     public Optional<User> findById(int id) {
         return userRepository.findById(id);
@@ -37,5 +44,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Transactional(readOnly = true)
+    public long countAll() {
+        return userRepository.count();
     }
 }

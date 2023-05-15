@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.r1411</groupId>
     <artifactId>AskAPI</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <name>AskAPI</name>
     <description>AskAPI</description>
     <properties>

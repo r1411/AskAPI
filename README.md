@@ -19,14 +19,26 @@
 ## Требования:
 Java 17
 
-PostgreSQL
+Docker
 
-## Запуск:
+Для запуска локально:
+* PostgreSQL
+
+## Запуск в Docker:
 1) ```git clone https://github.com/r1411/AskAPI.git```
 2) ```cd AskAPI```
-3) Настроить информацию о БД и секрет JWT в application.properties 
+3) Настроить переменные в .env
 4) ```./mvnw package```
-5) ```java -jar target/*.jar```
+5) ```docker-compose up -d```
+
+## Запуск локально:
+(Не рекомендуется)
+1) Создать пользователя, базу и схему в БД
+2) ```git clone https://github.com/r1411/AskAPI.git```
+3) ```cd AskAPI```
+4) Отредактировать application.properties, подставив значения вручную
+5) ```./mvnw package```
+6) ```java -jar target/*.jar```
 
 ## Документация
 После запуска документация доступна по пути /swagger-ui.html
